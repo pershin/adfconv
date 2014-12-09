@@ -1,8 +1,9 @@
 /* ADF Converter
  *
- * How to compile the code (example):
- * cc adfconv.c convert.c progress_bar.c -o adfconv
- * cl adfconv.c convert.c progress_bar.c
+ * How to compile the code
+ * Linux: cc adfconv.c convert.c progress.c -o adfconv
+ * Windows: cl adfconv.c convert.c progress.c
+ * DOS (Turbo C 2.01): tcc adfconv.c convert.c progress.c
  *
  * File: adfconv.c
  * Author: Sergey Pershin <sergey dot pershin at hotmail dot com>

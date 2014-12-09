@@ -4,7 +4,8 @@
  */
 
 #include <stdio.h>
-#include "progress_bar.h"
+#include "convert.h"
+#include "progress.h"
 
 /* Checking if a file exists. */
 int file_exists(const char *filename)
@@ -18,12 +19,12 @@ int file_exists(const char *filename)
 }
 
 /* Get file size in bytes. */
-long int filesize(FILE *stream)
+unsigned long long int filesize(FILE *stream)
 {
-    long int fsize;
-    fseek(stream, 0, SEEK_END);
+    unsigned long long int fsize;
+    fseek(stream, 0L, SEEK_END);
     fsize = ftell(stream);
-    fseek(stream, 0, SEEK_SET);
+    fseek(stream, 0L, SEEK_SET);
     return fsize;
 }
 
@@ -31,9 +32,9 @@ long int filesize(FILE *stream)
 int adf_convert(const char *src_filename, const char *dest_filename)
 {
     FILE *src_stream, *dest_stream;
-    long int i = 0;
-    long int fsize;
-    char byte;
+    unsigned long long int i = 0;
+    unsigned long long int fsize;
+    byte byte;
 
     if (file_exists(dest_filename)) {
         printf("Error: Destination file '%s' exists.\n", dest_filename);
@@ -57,9 +58,10 @@ int adf_convert(const char *src_filename, const char *dest_filename)
 
     fsize = filesize(src_stream);
     printf("File name: %s\n"
-        "Size: %d bytes\n\n", src_filename, fsize);
+        "Size: %llu bytes\n\n", src_filename, fsize);
 
     while (!feof(src_stream)) {
+        progress_bar(i, fsize);
         byte = getc(src_stream);
 
         /* Encode */
@@ -67,8 +69,6 @@ int adf_convert(const char *src_filename, const char *dest_filename)
 
         if (!feof(src_stream))
             putc(byte, dest_stream);
-
-        progress_bar(i, fsize);
         i++;
     }
     fclose(dest_stream);
