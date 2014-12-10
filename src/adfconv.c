@@ -17,11 +17,11 @@ int main(int argc, const char *argv[])
 {
     if (argc == 3) {
         if (adf_convert(argv[1], argv[2]))
-            printf("\nDone!\n");
+            printf("Done!\n");
     } else {
         printf("Converter ADF (GTA Vice City) to MP3 and back.\n"
-            "Version: " ADFCONV_VERSION "\n\n"
-            "ADFCONV source destination\n");
+               "Version: " ADFCONV_VERSION "\n\n"
+               "ADFCONV source destination\n");
     }
     return 0;
 }

@@ -6,20 +6,34 @@
 #include <stdio.h>
 #include "progress.h"
 
-int j = 0;
-int k = 0;
+int i, j, k;
 
-void progress_bar(unsigned long long int i, unsigned long long int fsize)
+void progress_bar_start(unsigned long long int fsize)
 {
-    if (i == 0) {
-        printf("          0%%           50%%           100%%\n"
-            "Progress: ");
-    } else {
-        if (j != k) {
+    printf("          0%%           50%%           100%%\n"
+           "Progress: ");
+    i = 0;
+    j = 0;
+    k = fsize / 1024 / 31;
+}
+
+void progress_bar()
+{
+    if (i == 1024) {
+        i = 0;
+        j++;
+
+        if (j == k) {
             putchar(FULL_BLOCK);
-            j = k;
+            fflush(stdout);
+            j = 0;
         }
-        k = i * 32 / fsize;
     }
-    fflush(stdout);
+
+    i++;
+}
+
+void progress_bar_stop()
+{
+    printf("\n");
 }

@@ -32,7 +32,6 @@ unsigned long long int filesize(FILE *stream)
 int adf_convert(const char *src_filename, const char *dest_filename)
 {
     FILE *src_stream, *dest_stream;
-    unsigned long long int i = 0;
     unsigned long long int fsize;
     byte byte;
 
@@ -42,14 +41,12 @@ int adf_convert(const char *src_filename, const char *dest_filename)
     }
 
     src_stream = fopen(src_filename, "rb");
-
     if (!src_stream) {
         printf("Error: Cannot open source file: '%s'.\n", src_filename);
         return 0;
     }
 
     dest_stream = fopen(dest_filename, "wb");
-
     if (!dest_stream) {
         fclose(src_stream);
         printf("Error: Cannot write destination file: '%s'.\n", dest_filename);
@@ -60,17 +57,20 @@ int adf_convert(const char *src_filename, const char *dest_filename)
     printf("File name: %s\n"
         "Size: %llu bytes\n\n", src_filename, fsize);
 
-    while (!feof(src_stream)) {
-        progress_bar(i, fsize);
-        byte = getc(src_stream);
+    progress_bar_start(fsize);
 
-        /* Encode */
-        byte = byte ^ 0x22;
+    while (!feof(src_stream)) {
+        byte = getc(src_stream);
+        byte = byte ^ 0x22; /* Encode */
 
         if (!feof(src_stream))
             putc(byte, dest_stream);
-        i++;
+
+        progress_bar();
     }
+
+    progress_bar_stop();
+
     fclose(dest_stream);
     fclose(src_stream);
     return 1;
