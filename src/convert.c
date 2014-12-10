@@ -4,6 +4,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "convert.h"
 #include "progress.h"
 
@@ -29,11 +30,12 @@ unsigned long long int filesize(FILE *stream)
 }
 
 /* Convert ADF to MP3 and back. */
-int adf_convert(const char *src_filename, const char *dest_filename)
+int adf_convert(const char *src_filename, const char *dest_filename, int mode)
 {
     FILE *src_stream, *dest_stream;
+    int i, count;
     unsigned long long int fsize;
-    byte byte;
+    byte *buffer;
 
     if (file_exists(dest_filename)) {
         printf("Error: Destination file '%s' exists.\n", dest_filename);
@@ -59,19 +61,45 @@ int adf_convert(const char *src_filename, const char *dest_filename)
 
     progress_bar_start(fsize);
 
-    while (!feof(src_stream)) {
-        byte = getc(src_stream);
-        byte = byte ^ 0x22; /* Encode */
+    /* Reading a file, block per block. */
+    if (mode == 1) {
+        buffer = (byte *)malloc(BUFFER_MALLOC);
 
-        if (!feof(src_stream))
-            putc(byte, dest_stream);
+        while (!feof(src_stream)) {
+            count = fread(buffer, sizeof(byte), BUFFER_MALLOC, src_stream);
 
-        progress_bar();
+            for (i = 0; i < count; i++) {
+                buffer[i] = buffer[i] ^ 0x22; /* Encrypt */
+                progress_bar();
+            }
+
+            fwrite(buffer, sizeof(byte), count, dest_stream);
+        }
+
+        free(buffer);
+    }
+
+    /* Reading a file, byte per byte. */
+    if (mode == 2) {
+        byte byte;
+
+        while (!feof(src_stream)) {
+            byte = getc(src_stream);
+            byte = byte ^ 0x22; /* Encrypt */
+
+            if (!feof(src_stream))
+                putc(byte, dest_stream);
+
+            progress_bar();
+        }
     }
 
     progress_bar_stop();
 
     fclose(dest_stream);
     fclose(src_stream);
+
+    printf("Done!\n");
+
     return 1;
 }

@@ -13,15 +13,26 @@
 #include "adfconv.h"
 #include "convert.h"
 
+void usage()
+{
+    printf("Converter ADF (GTA Vice City) to MP3 and back.\n"
+           "Version: " ADFCONV_VERSION "\n\n"
+           "Usage: adfconv <source> <destination> [-b]\n");
+}
+
 int main(int argc, const char *argv[])
 {
     if (argc == 3) {
-        if (adf_convert(argv[1], argv[2]))
-            printf("Done!\n");
+        adf_convert(argv[1], argv[2], 1);
+    } else if (argc == 4) {
+
+        if (strcmp(argv[3], "-b") == 0) {
+            adf_convert(argv[1], argv[2], 2);
+        } else {
+            usage();
+        }
     } else {
-        printf("Converter ADF (GTA Vice City) to MP3 and back.\n"
-               "Version: " ADFCONV_VERSION "\n\n"
-               "ADFCONV source destination\n");
+        usage();
     }
     return 0;
 }
