@@ -22,82 +22,64 @@ int file_exists(const char *filename)
 /* Get file size in bytes. */
 unsigned long long int filesize(FILE *stream)
 {
-    unsigned long long int fsize;
+    unsigned long long int fsiz;
     fseek(stream, 0L, SEEK_END);
-    fsize = ftell(stream);
+    fsiz = ftell(stream);
     fseek(stream, 0L, SEEK_SET);
-    return fsize;
+    return fsiz;
 }
 
 /* Convert ADF to MP3 and back. */
-int adf_convert(const char *src_filename, const char *dest_filename, int mode)
+int adf_convert(const char *fsrc, const char *fdest)
 {
-    FILE *src_stream, *dest_stream;
+    FILE *src, *dest;
     int i, count;
-    unsigned long long int fsize;
-    byte *buffer;
+    unsigned long long int fsiz;
+    byte *buf;
 
-    if (file_exists(dest_filename)) {
-        printf("Error: Destination file '%s' exists.\n", dest_filename);
+    if (file_exists(fdest)) {
+        printf("Error: Destination file '%s' exists.\n", fdest);
         return 0;
     }
 
-    src_stream = fopen(src_filename, "rb");
-    if (!src_stream) {
-        printf("Error: Cannot open source file: '%s'.\n", src_filename);
+    src = fopen(fsrc, "rb");
+    if (!src) {
+        printf("Error: Cannot open source file: '%s'.\n", fsrc);
         return 0;
     }
 
-    dest_stream = fopen(dest_filename, "wb");
-    if (!dest_stream) {
-        fclose(src_stream);
-        printf("Error: Cannot write destination file: '%s'.\n", dest_filename);
+    dest = fopen(fdest, "wb");
+    if (!dest) {
+        fclose(src);
+        printf("Error: Cannot write destination file: '%s'.\n", fdest);
         return 0;
     }
 
-    fsize = filesize(src_stream);
+    fsiz = filesize(src);
     printf("File name: %s\n"
-        "Size: %llu bytes\n\n", src_filename, fsize);
+           "Size: %llu bytes\n\n", fsrc, fsiz);
 
-    progress_bar_start(fsize);
+    progress_bar_start(fsiz);
 
-    /* Reading a file, block per block. */
-    if (mode == 1) {
-        buffer = (byte *)malloc(BUFFER_MALLOC);
+    buf = (byte *)malloc(BUFSIZ);
 
-        while (!feof(src_stream)) {
-            count = fread(buffer, sizeof(byte), BUFFER_MALLOC, src_stream);
+    while (!feof(src)) {
+        count = fread(buf, sizeof(byte), BUFSIZ, src);
 
-            for (i = 0; i < count; i++) {
-                buffer[i] = buffer[i] ^ 0x22; /* Encrypt */
-                progress_bar();
-            }
-
-            fwrite(buffer, sizeof(byte), count, dest_stream);
-        }
-
-        free(buffer);
-    }
-
-    /* Reading a file, byte per byte. */
-    if (mode == 2) {
-        byte byte;
-
-        while (!feof(src_stream)) {
-            byte = getc(src_stream);
-            byte = byte ^ 0x22; /* Encrypt */
-
-            if (!feof(src_stream))
-                putc(byte, dest_stream);
-
+        for (i = 0; i < count; i++) {
+            buf[i] = buf[i] ^ 0x22; /* Encrypt */
             progress_bar();
         }
+
+        fwrite(buf, sizeof(byte), count, dest);
     }
+
+    free(buf);
 
     progress_bar_stop();
 
-    fclose(dest_stream);
-    fclose(src_stream);
+    fclose(dest);
+    fclose(src);
 
     printf("Done!\n");
 

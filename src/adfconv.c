@@ -17,20 +17,13 @@ void usage()
 {
     printf("Converter ADF (GTA Vice City) to MP3 and back.\n"
            "Version: " ADFCONV_VERSION "\n\n"
-           "Usage: adfconv <source> <destination> [-b]\n");
+           "Usage: adfconv <source> <destination>\n");
 }
 
 int main(int argc, const char *argv[])
 {
     if (argc == 3) {
-        adf_convert(argv[1], argv[2], 1);
-    } else if (argc == 4) {
-
-        if (strcmp(argv[3], "-b") == 0) {
-            adf_convert(argv[1], argv[2], 2);
-        } else {
-            usage();
-        }
+        adf_convert(argv[1], argv[2]);
     } else {
         usage();
     }
