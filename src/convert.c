@@ -38,21 +38,21 @@ int adf_convert(const char *fsrc, const char *fdest)
     byte *buf;
 
     if (file_exists(fdest)) {
-        printf("Error: Destination file '%s' exists.\n", fdest);
-        return 0;
+        fprintf(stderr, "Error: Destination file '%s' exists.\n", fdest);
+        return EXIT_FAILURE;
     }
 
     src = fopen(fsrc, "rb");
     if (!src) {
-        printf("Error: Cannot open source file: '%s'.\n", fsrc);
-        return 0;
+        fprintf(stderr, "Error: Cannot open source file: '%s'.\n", fsrc);
+        return EXIT_FAILURE;
     }
 
     dest = fopen(fdest, "wb");
     if (!dest) {
         fclose(src);
-        printf("Error: Cannot write destination file: '%s'.\n", fdest);
-        return 0;
+        fprintf(stderr, "Error: Cannot write destination file: '%s'.\n", fdest);
+        return EXIT_FAILURE;
     }
 
     fsiz = filesize(src);
@@ -83,5 +83,5 @@ int adf_convert(const char *fsrc, const char *fdest)
 
     printf("Done!\n");
 
-    return 1;
+    return EXIT_SUCCESS;
 }

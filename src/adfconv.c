@@ -10,6 +10,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "adfconv.h"
 #include "convert.h"
 
@@ -22,10 +23,15 @@ void usage()
 
 int main(int argc, const char *argv[])
 {
+    int status;
+
+    status = EXIT_FAILURE;
+
     if (argc == 3) {
-        adf_convert(argv[1], argv[2]);
+        status = adf_convert(argv[1], argv[2]);
     } else {
         usage();
     }
-    return 0;
+
+    return status;
 }
