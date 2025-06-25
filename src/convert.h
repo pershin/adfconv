@@ -1,6 +1,8 @@
 #ifndef _CONVERT_H_INCLUDED_
 #define _CONVERT_H_INCLUDED_
 
+#include <stdio.h>
+
 typedef unsigned char byte;
 
 int file_exists(const char *filename);
