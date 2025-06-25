@@ -14,7 +14,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void usage() {
+void usage(void) {
   printf("Converter ADF (GTA Vice City) to MP3 and back.\n"
          "Version: " ADFCONV_VERSION "\n\n"
          "Usage: adfconv <source> <destination>\n");

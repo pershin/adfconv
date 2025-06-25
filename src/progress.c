@@ -16,7 +16,7 @@ void progress_bar_start(unsigned long long int fsize) {
   k = fsize / 1024 / 31;
 }
 
-void progress_bar() {
+void progress_bar(void) {
   if (i == 1024) {
     i = 0;
     j++;
@@ -31,4 +31,4 @@ void progress_bar() {
   i++;
 }
 
-void progress_bar_stop() { printf("\n"); }
+void progress_bar_stop(void) { printf("\n"); }

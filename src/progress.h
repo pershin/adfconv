@@ -11,8 +11,8 @@
 
 void progress_bar_start(unsigned long long int fsize);
 
-void progress_bar();
+void progress_bar(void);
 
-void progress_bar_stop();
+void progress_bar_stop(void);
 
 #endif // _PROGRESS_BAR_H_INCLUDED_
