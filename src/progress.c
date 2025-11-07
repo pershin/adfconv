@@ -23,14 +23,14 @@ void progress_bar(void) {
   if (i == bytes_per_block) {
     blocks_left--;
     i = 0;
-    putchar(FULL_BLOCK);
+    fputs(FULL_BLOCK, stdout);
     fflush(stdout);
   }
 }
 
 void progress_bar_stop(void) {
   while (blocks_left--) {
-    putchar(FULL_BLOCK);
+    fputs(FULL_BLOCK, stdout);
   }
 
   printf("\n");

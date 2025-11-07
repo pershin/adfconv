@@ -4,11 +4,11 @@
 #include <stdio.h>
 
 #ifdef __linux
-#define FULL_BLOCK 0x8D
+#define FULL_BLOCK "\xE2\x96\x88"
 #elif __APPLE__
-#define FULL_BLOCK '*'
+#define FULL_BLOCK "\xE2\x96\x88"
 #else
-#define FULL_BLOCK 0xDB
+#define FULL_BLOCK "\xDB"
 #endif // __linux
 
 #define PROGRESS_BAR_WIDTH 31
