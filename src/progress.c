@@ -6,29 +6,32 @@
 #include "progress.h"
 #include <stdio.h>
 
-int i, j, k;
+static size_t i, bytes_per_block, blocks_left;
 
 void progress_bar_start(size_t fsiz) {
   printf("          0%%           50%%           100%%\n"
          "Progress: ");
+  fflush(stdout);
   i = 0;
-  j = 0;
-  k = fsiz / 1024 / PROGRESS_BAR_WIDTH;
+  bytes_per_block = fsiz / PROGRESS_BAR_WIDTH;
+  blocks_left = PROGRESS_BAR_WIDTH;
 }
 
 void progress_bar(void) {
-  if (i == 1024) {
-    i = 0;
-    j++;
-
-    if (j == k) {
-      putchar(FULL_BLOCK);
-      fflush(stdout);
-      j = 0;
-    }
-  }
-
   i++;
+
+  if (i == bytes_per_block) {
+    blocks_left--;
+    i = 0;
+    putchar(FULL_BLOCK);
+    fflush(stdout);
+  }
 }
 
-void progress_bar_stop(void) { printf("\n"); }
+void progress_bar_stop(void) {
+  while (blocks_left--) {
+    putchar(FULL_BLOCK);
+  }
+
+  printf("\n");
+}
