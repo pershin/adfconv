@@ -13,7 +13,7 @@ void progress_bar_start(unsigned long long int fsize) {
          "Progress: ");
   i = 0;
   j = 0;
-  k = fsize / 1024 / 31;
+  k = fsize / 1024 / PROGRESS_BAR_WIDTH;
 }
 
 void progress_bar(void) {

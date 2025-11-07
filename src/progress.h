@@ -9,6 +9,8 @@
 #define FULL_BLOCK 0xDB
 #endif // __linux
 
+#define PROGRESS_BAR_WIDTH 31
+
 void progress_bar_start(unsigned long long int fsize);
 
 void progress_bar(void);
