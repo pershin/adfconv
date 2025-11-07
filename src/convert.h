@@ -7,7 +7,7 @@ typedef unsigned char byte;
 
 int file_exists(const char *filename);
 
-unsigned long long int filesize(FILE *stream);
+size_t filesize(FILE *stream);
 
 int adf_convert(const char *fsrc, const char *fdest);
 

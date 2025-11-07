@@ -8,12 +8,12 @@
 
 int i, j, k;
 
-void progress_bar_start(unsigned long long int fsize) {
+void progress_bar_start(size_t fsiz) {
   printf("          0%%           50%%           100%%\n"
          "Progress: ");
   i = 0;
   j = 0;
-  k = fsize / 1024 / PROGRESS_BAR_WIDTH;
+  k = fsiz / 1024 / PROGRESS_BAR_WIDTH;
 }
 
 void progress_bar(void) {

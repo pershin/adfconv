@@ -19,8 +19,8 @@ int file_exists(const char *filename) {
 }
 
 /* Get file size in bytes. */
-unsigned long long int filesize(FILE *stream) {
-  unsigned long long int fsiz;
+size_t filesize(FILE *stream) {
+  size_t fsiz;
   fseek(stream, 0L, SEEK_END);
   fsiz = ftell(stream);
   fseek(stream, 0L, SEEK_SET);
@@ -31,7 +31,7 @@ unsigned long long int filesize(FILE *stream) {
 int adf_convert(const char *fsrc, const char *fdest) {
   FILE *src, *dest;
   int i, count;
-  unsigned long long int fsiz;
+  size_t fsiz;
   byte *buf;
 
   if (file_exists(fdest)) {
@@ -54,7 +54,7 @@ int adf_convert(const char *fsrc, const char *fdest) {
 
   fsiz = filesize(src);
   printf("File name: %s\n"
-         "Size: %llu bytes\n\n",
+         "Size: %ld bytes\n\n",
          fsrc, fsiz);
 
   progress_bar_start(fsiz);
