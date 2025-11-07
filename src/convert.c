@@ -52,14 +52,20 @@ int adf_convert(const char *fsrc, const char *fdest) {
     return EXIT_FAILURE;
   }
 
+  buf = (byte *)malloc(BUFSIZ);
+  if (NULL == buf) {
+    fclose(dest);
+    fclose(src);
+    fprintf(stderr, "Error: Insufficient memory available.\n");
+    return EXIT_FAILURE;
+  }
+
   fsiz = filesize(src);
   printf("File name: %s\n"
          "Size: %ld bytes\n\n",
          fsrc, fsiz);
 
   progress_bar_start(fsiz);
-
-  buf = (byte *)malloc(BUFSIZ);
 
   while (!feof(src)) {
     count = fread(buf, sizeof(byte), BUFSIZ, src);
@@ -72,10 +78,9 @@ int adf_convert(const char *fsrc, const char *fdest) {
     fwrite(buf, sizeof(byte), count, dest);
   }
 
-  free(buf);
-
   progress_bar_stop();
 
+  free(buf);
   fclose(dest);
   fclose(src);
 
