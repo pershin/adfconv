@@ -1,5 +1,5 @@
-#ifndef _CONVERT_H_INCLUDED_
-#define _CONVERT_H_INCLUDED_
+#ifndef CONVERT_H
+#define CONVERT_H
 
 #include <stdio.h>
 
@@ -11,4 +11,4 @@ unsigned long long int filesize(FILE *stream);
 
 int adf_convert(const char *fsrc, const char *fdest);
 
-#endif // _CONVERT_H_INCLUDED_
+#endif /* CONVERT_H */

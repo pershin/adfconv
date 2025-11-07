@@ -1,5 +1,5 @@
-#ifndef _PROGRESS_BAR_H_INCLUDED_
-#define _PROGRESS_BAR_H_INCLUDED_
+#ifndef PROGRESS_BAR_H
+#define PROGRESS_BAR_H
 
 #ifdef __linux
 #define FULL_BLOCK 0x8D
@@ -15,4 +15,4 @@ void progress_bar(void);
 
 void progress_bar_stop(void);
 
-#endif // _PROGRESS_BAR_H_INCLUDED_
+#endif /* PROGRESS_BAR_H */

@@ -1,6 +1,6 @@
-#ifndef _ADFCONV_H_INCLUDED_
-#define _ADFCONV_H_INCLUDED_
+#ifndef ADFCONV_H
+#define ADFCONV_H
 
 #define ADFCONV_VERSION "1.0.0"
 
-#endif // _ADFCONV_H_INCLUDED_
+#endif /* ADFCONV_H */
