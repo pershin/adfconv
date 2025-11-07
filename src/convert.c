@@ -65,7 +65,7 @@ int adf_convert(const char *fsrc, const char *fdest) {
     count = fread(buf, sizeof(byte), BUFSIZ, src);
 
     for (i = 0; i < count; i++) {
-      buf[i] = buf[i] ^ 0x22; /* Encrypt */
+      buf[i] ^= 0x22; /* Encrypt */
       progress_bar();
     }
 
