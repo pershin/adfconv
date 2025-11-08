@@ -9,7 +9,7 @@
 #define FULL_BLOCK "\xE2\x96\x88"
 #else
 #define FULL_BLOCK "\xDB"
-#endif // __linux
+#endif /* __linux */
 
 #define PROGRESS_BAR_WIDTH 31
 
