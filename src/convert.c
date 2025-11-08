@@ -4,28 +4,13 @@
  */
 
 #include "convert.h"
+#include "adfconv.h"
 #include "progress.h"
 #include <stdio.h>
 #include <stdlib.h>
 
-/* Checking if a file exists. */
-int file_exists(const char *filename) {
-  FILE *stream = fopen(filename, "r");
-  if (stream != NULL) {
-    fclose(stream);
-    return 1;
-  }
-  return 0;
-}
-
-/* Get file size in bytes. */
-size_t filesize(FILE *stream) {
-  size_t fsiz;
-  fseek(stream, 0L, SEEK_END);
-  fsiz = ftell(stream);
-  fseek(stream, 0L, SEEK_SET);
-  return fsiz;
-}
+static int file_exists(const char *filename);
+static size_t filesize(FILE *stream);
 
 /* Convert ADF to MP3 and back. */
 int adf_convert(const char *fsrc, const char *fdest) {
@@ -87,4 +72,23 @@ int adf_convert(const char *fsrc, const char *fdest) {
   printf("Done!\n");
 
   return EXIT_SUCCESS;
+}
+
+/* Checking if a file exists. */
+static int file_exists(const char *filename) {
+  FILE *stream = fopen(filename, "r");
+  if (stream != NULL) {
+    fclose(stream);
+    return 1;
+  }
+  return 0;
+}
+
+/* Get file size in bytes. */
+static size_t filesize(FILE *stream) {
+  size_t fsiz;
+  fseek(stream, 0L, SEEK_END);
+  fsiz = ftell(stream);
+  fseek(stream, 0L, SEEK_SET);
+  return fsiz;
 }
