@@ -14,34 +14,33 @@ static size_t filesize(FILE *stream);
 
 /* Convert ADF to MP3 and back. */
 int adf_convert(const char *fsrc, const char *fdest) {
-  FILE *src, *dest;
+  int status = EXIT_FAILURE;
+  FILE *src = NULL;
+  FILE *dest = NULL;
   size_t i, count, fsiz;
-  byte *buf;
+  byte *buf = NULL;
 
   if (file_exists(fdest)) {
     fprintf(stderr, "Error: Destination file '%s' exists.\n", fdest);
-    return EXIT_FAILURE;
+    goto Cleanup;
   }
 
   src = fopen(fsrc, "rb");
   if (!src) {
     fprintf(stderr, "Error: Cannot open source file: '%s'.\n", fsrc);
-    return EXIT_FAILURE;
+    goto Cleanup;
   }
 
   dest = fopen(fdest, "wb");
   if (!dest) {
-    fclose(src);
     fprintf(stderr, "Error: Cannot write destination file: '%s'.\n", fdest);
-    return EXIT_FAILURE;
+    goto Cleanup;
   }
 
   buf = (byte *)malloc(BUFSIZ);
   if (NULL == buf) {
-    fclose(dest);
-    fclose(src);
     fprintf(stderr, "Error: Insufficient memory available.\n");
-    return EXIT_FAILURE;
+    goto Cleanup;
   }
 
   fsiz = filesize(src);
@@ -64,13 +63,21 @@ int adf_convert(const char *fsrc, const char *fdest) {
 
   progress_final();
 
-  free(buf);
-  fclose(dest);
-  fclose(src);
-
+  status = EXIT_SUCCESS;
   printf("Done!\n");
 
-  return EXIT_SUCCESS;
+Cleanup:
+  free(buf);
+
+  if (NULL != dest) {
+    fclose(dest);
+  }
+
+  if (NULL != src) {
+    fclose(src);
+  }
+
+  return status;
 }
 
 /* Checking if a file exists. */
