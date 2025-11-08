@@ -17,7 +17,7 @@ int adf_convert(const char *fsrc, const char *fdest) {
   int status = EXIT_FAILURE;
   FILE *src = NULL;
   FILE *dest = NULL;
-  size_t i, count, fsiz;
+  size_t i, numread, numwritten, fsiz;
   byte *buf = NULL;
 
   if (file_exists(fdest)) {
@@ -50,15 +50,21 @@ int adf_convert(const char *fsrc, const char *fdest) {
 
   progress_init(fsiz);
 
-  while (!feof(src)) {
-    count = fread(buf, sizeof(byte), BUFSIZ, src);
+  for (;;) {
+    numread = fread(buf, sizeof(byte), BUFSIZ, src);
+    if (0 == numread) {
+      break;
+    }
 
-    for (i = 0; i < count; i++) {
+    for (i = 0; i < numread; i++) {
       buf[i] ^= 0x22; /* Encrypt */
       progress_update();
     }
 
-    fwrite(buf, sizeof(byte), count, dest);
+    numwritten = fwrite(buf, sizeof(byte), numread, dest);
+    if (numwritten != numread) {
+      break;
+    }
   }
 
   progress_final();
