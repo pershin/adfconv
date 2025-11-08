@@ -14,11 +14,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void usage(const char *program_name) {
-  printf("Converter ADF (GTA Vice City) to MP3 and back.\n"
-         "Version: " ADFCONV_VERSION "\n\n"
-         "Usage: %s <source> <destination>\n", program_name);
-}
+static void usage(const char *program_name);
 
 int main(int argc, const char *argv[]) {
   int status;
@@ -32,4 +28,11 @@ int main(int argc, const char *argv[]) {
   }
 
   return status;
+}
+
+static void usage(const char *program_name) {
+  printf("Converter ADF (GTA Vice City) to MP3 and back.\n"
+         "Version: " ADFCONV_VERSION "\n\n"
+         "Usage: %s <source> <destination>\n",
+         program_name);
 }
