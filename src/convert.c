@@ -31,6 +31,12 @@ int adf_convert(const char *fsrc, const char *fdest) {
     goto Cleanup;
   }
 
+  fsiz = filesize(src);
+  if (0 == fsiz) {
+    fprintf(stderr, "Error: Empty source file: '%s'.\n", fsrc);
+    goto Cleanup;
+  }
+
   dest = fopen(fdest, "wb");
   if (!dest) {
     fprintf(stderr, "Error: Cannot write destination file: '%s'.\n", fdest);
@@ -43,7 +49,6 @@ int adf_convert(const char *fsrc, const char *fdest) {
     goto Cleanup;
   }
 
-  fsiz = filesize(src);
   printf("File name: %s\n"
          "Size: %ld bytes\n\n",
          fsrc, fsiz);
