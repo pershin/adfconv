@@ -8,7 +8,7 @@
 
 static size_t i, bytes_per_block, blocks_left;
 
-void progress_bar_start(size_t fsiz) {
+void progress_init(size_t fsiz) {
   printf("          0%%           50%%           100%%\n"
          "Progress: ");
   fflush(stdout);
@@ -17,7 +17,7 @@ void progress_bar_start(size_t fsiz) {
   blocks_left = PROGRESS_BAR_WIDTH;
 }
 
-void progress_bar(void) {
+void progress_update(void) {
   i++;
 
   if (i == bytes_per_block) {
@@ -28,7 +28,7 @@ void progress_bar(void) {
   }
 }
 
-void progress_bar_stop(void) {
+void progress_final(void) {
   while (blocks_left--) {
     fputs(FULL_BLOCK, stdout);
   }

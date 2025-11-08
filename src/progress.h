@@ -1,5 +1,5 @@
-#ifndef PROGRESS_BAR_H
-#define PROGRESS_BAR_H
+#ifndef PROGRESS_H
+#define PROGRESS_H
 
 #include <stdio.h>
 
@@ -13,10 +13,10 @@
 
 #define PROGRESS_BAR_WIDTH 31
 
-void progress_bar_start(size_t fsiz);
+void progress_init(size_t fsiz);
 
-void progress_bar(void);
+void progress_update(void);
 
-void progress_bar_stop(void);
+void progress_final(void);
 
-#endif /* PROGRESS_BAR_H */
+#endif /* PROGRESS_H */

@@ -65,20 +65,20 @@ int adf_convert(const char *fsrc, const char *fdest) {
          "Size: %ld bytes\n\n",
          fsrc, fsiz);
 
-  progress_bar_start(fsiz);
+  progress_init(fsiz);
 
   while (!feof(src)) {
     count = fread(buf, sizeof(byte), BUFSIZ, src);
 
     for (i = 0; i < count; i++) {
       buf[i] ^= 0x22; /* Encrypt */
-      progress_bar();
+      progress_update();
     }
 
     fwrite(buf, sizeof(byte), count, dest);
   }
 
-  progress_bar_stop();
+  progress_final();
 
   free(buf);
   fclose(dest);
