@@ -15,8 +15,7 @@ static size_t filesize(FILE *stream);
 /* Convert ADF to MP3 and back. */
 int adf_convert(const char *fsrc, const char *fdest) {
   FILE *src, *dest;
-  int i, count;
-  size_t fsiz;
+  size_t i, count, fsiz;
   byte *buf;
 
   if (file_exists(fdest)) {
@@ -88,7 +87,7 @@ static int file_exists(const char *filename) {
 static size_t filesize(FILE *stream) {
   size_t fsiz;
   fseek(stream, 0L, SEEK_END);
-  fsiz = ftell(stream);
+  fsiz = (size_t)ftell(stream);
   fseek(stream, 0L, SEEK_SET);
   return fsiz;
 }
