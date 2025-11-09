@@ -76,6 +76,8 @@ int adf_convert(const char *fsrc, const char *fdest) {
 
   if (progress_final(&progress)) {
     status = EXIT_SUCCESS;
+  } else {
+    fprintf(stderr, "Error: Encrypt failed.\n");
   }
 
 Cleanup:
