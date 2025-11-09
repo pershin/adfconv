@@ -19,6 +19,7 @@ int adf_convert(const char *fsrc, const char *fdest) {
   FILE *dest = NULL;
   size_t i, numread, numwritten, fsiz;
   byte *buf = NULL;
+  PROGRESS_CTX progress = {0};
 
   if (file_exists(fdest)) {
     fprintf(stderr, "Error: Destination file '%s' exists.\n", fdest);
@@ -53,7 +54,7 @@ int adf_convert(const char *fsrc, const char *fdest) {
          "Size: %ld bytes\n\n",
          fsrc, fsiz);
 
-  progress_init(fsiz);
+  progress_init(&progress, fsiz);
 
   for (;;) {
     numread = fread(buf, sizeof(byte), BUFSIZ, src);
@@ -63,19 +64,19 @@ int adf_convert(const char *fsrc, const char *fdest) {
 
     for (i = 0; i < numread; i++) {
       buf[i] ^= 0x22; /* Encrypt */
-      progress_update();
     }
 
     numwritten = fwrite(buf, sizeof(byte), numread, dest);
     if (numwritten != numread) {
       break;
     }
+
+    progress_update(&progress, numwritten);
   }
 
-  progress_final();
-
-  status = EXIT_SUCCESS;
-  printf("Done!\n");
+  if (progress_final(&progress)) {
+    status = EXIT_SUCCESS;
+  }
 
 Cleanup:
   free(buf);
